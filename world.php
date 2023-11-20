@@ -13,10 +13,11 @@ $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $p
 // Check if a country query is specified
 if (isset($_GET['country'])) {
     $country = $_GET['country'];
+    $searchTerm = "%$country%";
 
     // Use the country in your SQL query to get specific information
     $stmt = $conn->prepare("SELECT * FROM countries WHERE name LIKE :country");
-    $stmt->bindParam(':country', $country, PDO::PARAM_STR);
+    $stmt->bindParam(':country', $searchTerm, PDO::PARAM_STR);
     $stmt->execute();
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -26,9 +27,23 @@ if (isset($_GET['country'])) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-<ul>
-<?php foreach ($results as $row): ?>
-  <li><?= $row['name'] . ' is ruled by ' . $row['head_of_state']; ?></li>
-<?php endforeach; ?>
-</ul>
-
+<table>
+ <thead>
+  <tr>
+  <th>Name of Country</th>
+  <th>Continent</th>
+  <th>Independence</th>
+  <th>Head of State</th>
+  </tr>
+</thead>
+ <tbody>
+  <?php foreach ($results as $row): ?>
+  <tr>
+  <td><?= $row['name']; ?></td>
+  <td><?= $row['continent']; ?></td>
+  <td><?= $row['independence_year']; ?></td>
+  <td><?= $row['head_of_state']; ?></td>
+  </tr>
+  <?php endforeach; ?>
+ </tbody>
+</table>
