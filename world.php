@@ -15,8 +15,15 @@ if (isset($_GET['country'])) {
     $country = $_GET['country'];
     $searchTerm = "%$country%";
 
-    // Use the country in your SQL query to get specific information
-    $stmt = $conn->prepare("SELECT * FROM countries WHERE name LIKE :country");
+    // Check if the lookup parameter is set to cities
+    if (isset($_GET['lookup']) && $_GET['lookup'] == 'cities') {
+        // Query to get cities in the specified country
+        $stmt = $conn->prepare("SELECT cities.name AS city, cities.district, cities.population FROM cities INNER JOIN countries ON cities.country_code = countries.code WHERE countries.name LIKE :country");
+    } else {
+        // Default query to get country information
+        $stmt = $conn->prepare("SELECT * FROM countries WHERE name LIKE :country");
+    }
+
     $stmt->bindParam(':country', $searchTerm, PDO::PARAM_STR);
     $stmt->execute();
 
@@ -29,21 +36,39 @@ if (isset($_GET['country'])) {
 ?>
 <table>
  <thead>
-  <tr>
-  <th>Name of Country</th>
-  <th>Continent</th>
-  <th>Independence</th>
-  <th>Head of State</th>
-  </tr>
+  <?php if (isset($_GET['lookup']) && $_GET['lookup'] == 'cities'): ?>
+    <tr>
+      <th>Name of City</th>
+      <th>District</th>
+      <th>Population</th>
+    </tr>
+  <?php else: ?>
+    <tr>
+      <th>Name</th>
+      <th>Continent</th>
+      <th>Independence</th>
+      <th>Head of State</th>
+    </tr>
+  <?php endif; ?>
 </thead>
  <tbody>
   <?php foreach ($results as $row): ?>
-  <tr>
-  <td><?= $row['name']; ?></td>
-  <td><?= $row['continent']; ?></td>
-  <td><?= $row['independence_year']; ?></td>
-  <td><?= $row['head_of_state']; ?></td>
-  </tr>
+    <tr>
+      <?php if (isset($_GET['lookup']) && $_GET['lookup'] == 'cities'): ?>
+        <td><?= $row['city']; ?></td>
+        <td><?= $row['district']; ?></td>
+        <td><?= $row['population']; ?></td>
+      <?php else: ?>
+        <?php foreach ($results as $row): ?>
+          <tr>
+            <td><?= $row['name']; ?></td>
+            <td><?= $row['continent']; ?></td>
+            <td><?= $row['independence_year']; ?></td>
+            <td><?= $row['head_of_state']; ?></td>
+          </tr>
+          <?php endforeach; ?>
+      <?php endif; ?>
+    </tr>
   <?php endforeach; ?>
  </tbody>
 </table>
