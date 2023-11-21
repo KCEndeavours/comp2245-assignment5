@@ -16,14 +16,14 @@ if (isset($_GET['country'])) {
     $searchTerm = "%$country%";
 
     // Check if the lookup parameter is set to cities
-    if (isset($_GET['lookup']) && $_GET['lookup'] == 'cities') {
-        // Query to get cities in the specified country
-        $stmt = $conn->prepare("SELECT cities.name AS city, cities.district, cities.population FROM cities INNER JOIN countries ON cities.country_code = countries.code WHERE countries.name LIKE :country");
-    } else {
-        // Default query to get country information
-        $stmt = $conn->prepare("SELECT * FROM countries WHERE name LIKE :country");
-    }
+    $isCitiesLookup = isset($_GET['lookup']) && $_GET['lookup'] == 'cities';
 
+    // Query to get country or city information
+    $query = $isCitiesLookup
+        ? "SELECT cities.name AS city, cities.district, cities.population FROM cities INNER JOIN countries ON cities.country_code = countries.code WHERE countries.name LIKE :country"
+        : "SELECT * FROM countries WHERE name LIKE :country";
+
+    $stmt = $conn->prepare($query);
     $stmt->bindParam(':country', $searchTerm, PDO::PARAM_STR);
     $stmt->execute();
 
@@ -34,41 +34,36 @@ if (isset($_GET['country'])) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
+
 <table>
- <thead>
-  <?php if (isset($_GET['lookup']) && $_GET['lookup'] == 'cities'): ?>
+  <thead>
     <tr>
-      <th>Name of City</th>
-      <th>District</th>
-      <th>Population</th>
-    </tr>
-  <?php else: ?>
-    <tr>
-      <th>Name</th>
-      <th>Continent</th>
-      <th>Independence</th>
-      <th>Head of State</th>
-    </tr>
-  <?php endif; ?>
-</thead>
- <tbody>
-  <?php foreach ($results as $row): ?>
-    <tr>
-      <?php if (isset($_GET['lookup']) && $_GET['lookup'] == 'cities'): ?>
-        <td><?= $row['city']; ?></td>
-        <td><?= $row['district']; ?></td>
-        <td><?= $row['population']; ?></td>
+      <?php if ($isCitiesLookup): ?>
+        <th>Name of City</th>
+        <th>District</th>
+        <th>Population</th>
       <?php else: ?>
-        <?php foreach ($results as $row): ?>
-          <tr>
-            <td><?= $row['name']; ?></td>
-            <td><?= $row['continent']; ?></td>
-            <td><?= $row['independence_year']; ?></td>
-            <td><?= $row['head_of_state']; ?></td>
-          </tr>
-          <?php endforeach; ?>
+        <th>Name</th>
+        <th>Continent</th>
+        <th>Independence</th>
+        <th>Head of State</th>
       <?php endif; ?>
     </tr>
-  <?php endforeach; ?>
- </tbody>
+  </thead>
+  <tbody>
+    <?php foreach ($results as $row): ?>
+      <tr>
+        <?php if ($isCitiesLookup): ?>
+          <td><?= $row['city']; ?></td>
+          <td><?= $row['district']; ?></td>
+          <td><?= $row['population']; ?></td>
+        <?php else: ?>
+          <td><?= $row['name']; ?></td>
+          <td><?= $row['continent']; ?></td>
+          <td><?= $row['independence_year']; ?></td>
+          <td><?= $row['head_of_state']; ?></td>
+        <?php endif; ?>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>

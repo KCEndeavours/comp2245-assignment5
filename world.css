@@ -1,15 +1,36 @@
 @import url('https://fonts.googleapis.com/css?family=Titan+One&display=swap');
 
-body{
+body {
     background-color: #f8f4f4;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.container::before {
+    content: '';
+    background-image: url("vecteezy_world-map-with-country-names_20833849.jpg");
+    background-size: cover;
+    filter: blur(5px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 p{
     font-family:'Arial Narrow', Helvetica, sans-serif;
 }
 
-.container{
+.labels{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.buttons{
     margin-top: 30px;
     display: flex;
     align-items: center;
@@ -25,7 +46,20 @@ p{
     color: #fff;
 }
 
-button{
+#lookup{
+    height: 30px;
+    color: #fff;
+    background-color: rgb(224, 154, 14);
+
+    padding: 4px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-color:rgba(255, 255, 255, 0);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+#lookup-cities{
     height: 30px;
     color: #fff;
     background-color: rgb(199, 23, 23);
@@ -50,4 +84,21 @@ button{
     align-items: center;
     justify-content: center;
     margin-top: 30px;
+}
+
+table {
+    width: 60%;
+    margin: 30px auto; /* Adjust margin as needed */
+    background-color: rgba(255, 255, 255, 0.8); /* Background color with transparency */
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd; /* Add borders for better visibility */
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2; /* Light gray background for header */
 }

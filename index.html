@@ -13,26 +13,27 @@
 	</head>
 
 	<body>
-		<header class="title">
-			<h1>World Database Lookup</h1>
-		</header>
-
-		<main >
-			<div id="controls" class="container">
-				<label for="country">Country:</label>
-				<input id="country" type="search" name="country" placeholder="Enter country name" />
-			</div>
+		<section class="title">
+			<header>
+				<h1>World Database Lookup</h1>
+			</header>
+		</section>
+		<section class="container">
 			<div>
-				<button id="lookup">Lookup</button>
-				<button id="lookup-cities">Lookup Cities</button>
+				<main >
+					<div id="controls" class="labels">
+						<label for="country">Country:</label>
+						<input id="country" type="search" name="country" placeholder="Enter country name" />
+					</div>
+					<div class="buttons">
+						<button id="lookup">Lookup</button>
+						<button id="lookup-cities">Lookup Cities</button>
+					</div>			
+					<div id="result">
+						<!-- countries will appear here -->
+					</div>
+				</main>
 			</div>
-				
-
-			
-			<div id="result">
-				<!-- countries will appear here -->
-			</div>
-		</main>
-
+		</section>
 	</body>
 </html>
