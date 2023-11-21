@@ -11,28 +11,22 @@ $dbname = 'world';
 $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
 
 // Check if a country query is specified
-if (isset($_GET['country'])) {
-    $country = $_GET['country'];
-    $searchTerm = "%$country%";
+$country = isset($_GET['country']) ? $_GET['country'] : '';
+$searchTerm = "%$country%";
 
-    // Check if the lookup parameter is set to cities
-    $isCitiesLookup = isset($_GET['lookup']) && $_GET['lookup'] == 'cities';
+// Check if the lookup parameter is set to cities
+$isCitiesLookup = isset($_GET['lookup']) && $_GET['lookup'] == 'cities';
 
-    // Query to get country or city information
-    $query = $isCitiesLookup
-        ? "SELECT cities.name AS city, cities.district, cities.population FROM cities INNER JOIN countries ON cities.country_code = countries.code WHERE countries.name LIKE :country"
-        : "SELECT * FROM countries WHERE name LIKE :country";
+// Query to get country or city information
+$query = $isCitiesLookup
+    ? "SELECT cities.name AS city, cities.district, cities.population FROM cities INNER JOIN countries ON cities.country_code = countries.code WHERE countries.name LIKE :country"
+    : "SELECT * FROM countries WHERE name LIKE :country";
 
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':country', $searchTerm, PDO::PARAM_STR);
-    $stmt->execute();
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':country', $searchTerm, PDO::PARAM_STR);
+$stmt->execute();
 
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    // If no country is specified, get information about all countries
-    $stmt = $conn->query("SELECT * FROM countries");
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <table>
