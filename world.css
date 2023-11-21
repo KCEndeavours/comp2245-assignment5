@@ -8,7 +8,7 @@ body {
 
 .container::before {
     content: '';
-    background-image: url("vecteezy_world-map-with-country-names_20833849.jpg");
+    background-image: url("img/vecteezy_world-map-with-country-names_20833849.jpg");
     background-size: cover;
     filter: blur(5px);
     position: fixed;
@@ -19,17 +19,14 @@ body {
     z-index: -1;
 }
 
-p{
-    font-family:'Arial Narrow', Helvetica, sans-serif;
-}
-
-.labels{
-    margin-top: 30px;
+.input{
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
 }
+
 .buttons{
     margin-top: 30px;
     display: flex;
@@ -38,12 +35,16 @@ p{
     gap: 15px;
 }
 
-.title{
+.flex-container{
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
     text-align: center;
+    padding: 10px;
     background-color: rgb(185, 11, 11);
     color: #fff;
+    gap: 10px;
 }
 
 #lookup{
@@ -72,18 +73,20 @@ p{
 }
 
 #country{
+    margin-top: 20px;
     padding-left: 10px;
-    width: 220px;
+    width: 320px;
     height: 30px;
     border-color:rgba(255, 255, 255, 0);
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4  );
+    border-radius: 10px;
 }
 
 #result{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 table {
