@@ -1,2 +1,2 @@
 # COMP2245 Assignment 5
-This is Assignment 5 for Kadeem Charles on PHP and MySQL
+In this Assignment we were tasked with creating a city lookup page utilising what we were taught about PHP and MySQL. 
